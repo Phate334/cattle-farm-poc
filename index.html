@@ -106,44 +106,95 @@
                 <h1>會員中心</h1>
                 <div class="user-info">
                     <span>歡迎，<strong id="user-username"></strong></span>
+                    <button id="user-status-btn" class="btn btn-primary">狀態</button>
                     <button id="user-logout" class="btn btn-secondary">登出</button>
                 </div>
             </header>
 
             <main class="user-content">
-                <section class="points-section">
-                    <h2>我的點數</h2>
-                    <div class="points-display">
-                        <div class="points-value">
-                            <span class="points-number" id="user-points">0</span>
-                            <span class="points-label">點</span>
+                <!-- 遊戲區域 -->
+                <section class="game-section">
+                    <h2>養牛遊戲</h2>
+                    
+                    <!-- 資源顯示區 -->
+                    <div class="resources-bar">
+                        <div class="resource-item">
+                            <span class="resource-label">點數：</span>
+                            <span class="resource-value" id="game-points">0</span>
                         </div>
-                        <p class="points-description">這些點數可用於遊戲中的各項功能</p>
+                        <div class="resource-item">
+                            <span class="resource-label">牧草：</span>
+                            <span class="resource-value" id="game-grass">0</span>
+                        </div>
+                    </div>
+
+                    <!-- 購買牧草區 -->
+                    <div class="buy-grass-section">
+                        <h3>購買牧草</h3>
+                        <p>使用點數購買牧草來餵養乳牛（1 點數 = 1 牧草）</p>
+                        <div class="buy-controls">
+                            <input type="number" id="grass-amount" min="1" value="1" placeholder="購買數量">
+                            <button id="buy-grass-btn" class="btn btn-primary">購買牧草</button>
+                        </div>
+                        <div id="game-message" class="message"></div>
+                    </div>
+
+                    <!-- 乳牛顯示區 -->
+                    <div class="cattle-area">
+                        <h3>我的乳牛</h3>
+                        <div class="cattle-container" id="cattle-container">
+                            <div class="cattle-item" id="cattle-1" data-cattle-id="1">
+                                <div class="cattle-emoji">🐄</div>
+                                <div class="cattle-info">
+                                    <div class="cattle-name">乳牛 #1</div>
+                                    <div class="cattle-status">
+                                        <span class="status-label">飽食度：</span>
+                                        <span class="status-value" id="cattle-1-hunger">0</span>
+                                        <span class="status-unit">/100</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="game-hint">💡 點擊乳牛來餵養牧草（每次消耗 1 牧草，增加 10 飽食度）</p>
                     </div>
                 </section>
 
-                <section class="info-section">
-                    <h2>帳號資訊</h2>
-                    <div class="info-display">
-                        <div class="info-item">
-                            <label>帳號：</label>
-                            <span id="user-account"></span>
+                <div id="user-status-content" class="status-content hidden">
+                    <section class="points-section">
+                        <h2>我的點數</h2>
+                        <div class="points-display">
+                            <div class="points-value">
+                                <span class="points-number" id="user-points">0</span>
+                                <span class="points-label">點</span>
+                            </div>
+                            <p class="points-description">這些點數可用於遊戲中的各項功能</p>
                         </div>
-                        <div class="info-item">
-                            <label>註冊日期：</label>
-                            <span id="user-created"></span>
+                    </section>
+
+                    <section class="info-section">
+                        <h2>帳號資訊</h2>
+                        <div class="info-display">
+                            <div class="info-item">
+                                <label>帳號：</label>
+                                <span id="user-account"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>註冊日期：</label>
+                                <span id="user-created"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>上次登入：</label>
+                                <span id="user-last-login"></span>
+                            </div>
                         </div>
-                        <div class="info-item">
-                            <label>上次登入：</label>
-                            <span id="user-last-login"></span>
-                        </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </main>
         </div>
     </div>
 
     <script src="src/js/user-manager.js"></script>
+    <script src="src/js/game.js"></script>
     <script src="src/js/auth.js"></script>
     <script src="src/js/admin.js"></script>
     <script src="src/js/user.js"></script>

@@ -19,11 +19,13 @@ addopts = [
     "-v",
     "--strict-markers",
     "--tb=short",
+    "--base-url=http://localhost:8000",
 ]
 markers = [
     "auth: 認證相關測試",
     "admin: 管理員功能測試",
     "user: 使用者功能測試",
+    "game: 遊戲功能測試",
 ]
 
 [tool.playwright]

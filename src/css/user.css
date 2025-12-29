@@ -11,6 +11,15 @@
     margin: 0 auto;
 }
 
+/* 狀態內容區塊 */
+.status-content {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.status-content.hidden {
+    display: none;
+}
+
 /* 區塊樣式 */
 .points-section,
 .info-section {
@@ -116,5 +125,195 @@
 
     .info-item label {
         min-width: auto;
+    }
+}
+
+/* 遊戲區域樣式 */
+.game-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.game-section h2 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 0.5rem;
+}
+
+.game-section h3 {
+    color: #764ba2;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+/* 資源顯示區 */
+.resources-bar {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.resource-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.resource-label {
+    opacity: 0.9;
+}
+
+.resource-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* 購買牧草區 */
+.buy-grass-section {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.buy-grass-section p {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.buy-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.buy-controls input {
+    flex: 1;
+    max-width: 150px;
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.buy-controls input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* 乳牛顯示區 */
+.cattle-area {
+    padding: 1.5rem;
+    background: #f0f7ff;
+    border-radius: 8px;
+}
+
+.cattle-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cattle-item {
+    background: white;
+    border: 3px solid #667eea;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cattle-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    border-color: #764ba2;
+}
+
+.cattle-item:active {
+    transform: translateY(-2px);
+}
+
+.cattle-emoji {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    user-select: none;
+}
+
+.cattle-name {
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.cattle-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.status-value {
+    font-weight: 700;
+    color: #764ba2;
+    font-size: 1.1rem;
+}
+
+.game-hint {
+    color: #666;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 6px;
+}
+
+/* 訊息樣式 */
+#game-message {
+    margin-top: 1rem;
+}
+
+/* 響應式設計 - 遊戲區域 */
+@media (max-width: 768px) {
+    .game-section {
+        padding: 1.5rem;
+    }
+
+    .resources-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .buy-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .buy-controls input {
+        max-width: none;
+    }
+
+    .cattle-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cattle-emoji {
+        font-size: 3rem;
     }
 }

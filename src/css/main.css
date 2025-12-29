@@ -90,6 +90,11 @@ body {
     font-size: 0.95rem;
 }
 
+.message.success,
+.message.error {
+    display: block;
+}
+
 .message.success {
     background: #d4edda;
     color: #155724;
