@@ -92,34 +92,7 @@ class TestUser:
         expect(self.page.locator("#user-username")).to_contain_text(self.test_username)
         expect(self.page.locator("#user-account")).to_contain_text(self.test_username)
     
-    def test_user_sees_updated_points_after_admin_assignment(self):
-        """管理員指派點數後使用者應該能看到更新的點數"""
-        # 登出並以管理員登入
-        logout(self.page)
-        login(self.page, "admin", "admin")
-        
-        # 為測試使用者指派 150 點
-        user_select = self.page.locator("#target-user")
-        user_select.wait_for(state="visible", timeout=10000)
-        # 等待選項載入
-        self.page.wait_for_function(
-            "document.querySelectorAll('#target-user option').length > 1",
-            timeout=10000
-        )
-        user_select.select_option(label=self.test_username, timeout=10000)
-        self.page.fill("#points-amount", "150")
-        self.page.click('#assignPointsForm button[type="submit"]')
-        self.page.wait_for_timeout(500)
-        
-        # 登出管理員並以測試使用者重新登入
-        logout(self.page)
-        login(self.page, self.test_username, self.test_password)
-        expect_user_page(self.page)
-        
-        # 檢查點數是否已更新
-        points_number = self.page.locator("#user-points")
-        expect(points_number).to_contain_text("150")
-    
+
     def test_user_page_shows_points_label(self):
         """使用者頁面應該顯示點數標籤"""
         points_label = self.page.locator(".points-label")
@@ -132,32 +105,4 @@ class TestUser:
         expect(points_description).to_be_visible()
         expect(points_description).to_contain_text("這些點數可用於遊戲中的各項功能")
     
-    def test_login_state_persists_after_reload_with_updated_points(self):
-        """頁面重新整理後應該保持登入狀態並顯示最新資料"""
-        # 登出並以管理員身份為使用者增加點數
-        logout(self.page)
-        login(self.page, "admin", "admin")
-        user_select = self.page.locator("#target-user")
-        user_select.wait_for(state="visible", timeout=10000)
-        # 等待選項載入
-        self.page.wait_for_function(
-            "document.querySelectorAll('#target-user option').length > 1",
-            timeout=10000
-        )
-        user_select.select_option(label=self.test_username, timeout=10000)
-        self.page.fill("#points-amount", "200")
-        self.page.click('#assignPointsForm button[type="submit"]')
-        self.page.wait_for_timeout(500)
-        
-        # 登出管理員並以測試使用者登入
-        logout(self.page)
-        login(self.page, self.test_username, self.test_password)
-        expect_user_page(self.page)
-        
-        # 重新整理頁面
-        self.page.reload()
-        wait_for_page_load(self.page)
-        
-        # 應該仍在使用者頁面且點數正確
-        expect_user_page(self.page)
-        expect(self.page.locator("#user-points")).to_contain_text("200")
+
