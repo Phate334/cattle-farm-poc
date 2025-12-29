@@ -1,0 +1,42 @@
+name: 自動化測試
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Playwright 測試
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 簽出程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安裝 uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - name: 建立虛擬環境並安裝依賴
+        run: |
+          uv venv
+          uv pip install playwright pytest pytest-playwright pytest-xdist
+
+      - name: 安裝 Playwright 瀏覽器
+        run: |
+          source .venv/bin/activate
+          playwright install chromium --with-deps
+
+      - name: 執行測試
+        run: |
+          source .venv/bin/activate
+          pytest -v --tb=short --base-url=http://localhost:8000

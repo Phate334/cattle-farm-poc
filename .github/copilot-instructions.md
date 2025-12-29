@@ -100,16 +100,25 @@
 1. **功能開發**：
    - 在新分支上進行功能開發
    - 保持提交訊息清晰明確
-   - 測試功能正常運作
+   - **必須先執行測試確保功能正常運作**
 
-2. **程式碼審查**：
+2. **測試要求**：
+   - **所有程式碼變更都必須先執行自動化測試**
+   - 在提交 Pull Request 前必須確保所有測試通過
+   - 如果新增功能，應該同時新增對應的測試案例
+   - 測試指令：`pytest`（需先啟動虛擬環境：`source .venv/bin/activate`）
+   - 本地開發伺服器：由 pytest 自動管理（使用 Python http.server）
+
+3. **程式碼審查**：
    - 確認符合專案規範
    - 檢查中文用語正確性
    - 驗證沒有引入第三方框架
+   - **確認所有測試都已通過**
 
-3. **合併與部署**：
+4. **合併與部署**：
    - 合併到主分支後自動觸發 CI/CD
    - 確認 GitHub Pages 部署成功
+   - 確認 GitHub Actions 測試流程執行成功
 
 ## 遊戲功能開發指引
 
@@ -144,12 +153,63 @@ const UserManager = {
 - 優先考慮功能實現，其次考慮效能最佳化
 - 保持程式碼簡潔易讀
 - 定期更新 README.md 說明專案進度與功能
+- **變更程式碼後必須執行測試以確保功能正常**
+
+## 測試系統
+
+本專案使用 Playwright for Python 進行端對端測試，測試涵蓋所有核心功能。
+
+### 測試環境設定
+
+1. 安裝 uv（Python 套件管理工具）：
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. 建立虛擬環境並安裝依賴：
+   ```bash
+   uv venv
+   source .venv/bin/activate  # Windows: .venv\Scripts\activate
+   uv pip install playwright pytest pytest-playwright pytest-xdist
+   ```
+
+3. 安裝 Playwright 瀏覽器：
+   ```bash
+   playwright install chromium
+   ```
+
+### 執行測試
+
+- 執行所有測試：`pytest`
+- 執行特定測試檔案：`pytest tests/test_auth_login.py`
+- 執行標記的測試：`pytest -m auth`（認證測試）、`pytest -m admin`（管理員測試）、`pytest -m user`（使用者測試）
+- 平行執行測試：`pytest -n auto`
+- 詳細輸出：`pytest -v`
+
+### 測試覆蓋範圍
+
+測試案例位於 `./tests` 目錄：
+- `test_auth_login.py` - 登入功能測試
+- `test_auth_register.py` - 註冊功能測試
+- `test_admin.py` - 管理員功能測試
+- `test_user.py` - 一般使用者功能測試
+- `test_helpers.py` - 測試輔助工具函數
+- `conftest.py` - Pytest 配置與 fixtures
+
+### CI/CD 自動化測試
+
+- GitHub Actions 會在推送到 `main` 或 `develop` 分支時自動執行測試
+- Pull Request 也會觸發自動化測試
+- 使用 uv 進行快速依賴安裝，並啟用 cache 機制
+- 測試報告會自動上傳為 Artifacts，可在 Actions 頁面下載查看
 
 ## 參考資源
 
 - [MDN Web Docs](https://developer.mozilla.org/zh-TW/) - 繁體中文版本
 - [GitHub Pages 文件](https://docs.github.com/en/pages)
 - [GitHub Actions 文件](https://docs.github.com/en/actions)
+- [Playwright Python 文件](https://playwright.dev/python/) - 自動化測試框架
+- [uv 文件](https://github.com/astral-sh/uv) - Python 套件管理工具
 
 ---
 
