@@ -63,6 +63,7 @@ module.exports = defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    /* 可選擇性啟用其他瀏覽器測試
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
@@ -72,6 +73,7 @@ module.exports = defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+    */
   ],
 
   /* 本地開發伺服器設定 */
