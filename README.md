@@ -28,6 +28,7 @@
 - **資料儲存**: LocalStorage（前端瀏覽器儲存）
 - **部署**: GitHub Pages
 - **CI/CD**: GitHub Actions
+- **測試框架**: Playwright（端對端測試）
 
 ## 快速開始
 
@@ -68,6 +69,8 @@ npx http-server
 cattle-farm-poc/
 ├── .github/
 │   ├── workflows/          # GitHub Actions 部署設定
+│   │   ├── deploy.yml      # 部署到 GitHub Pages
+│   │   └── test.yml        # 自動化測試
 │   └── copilot-instructions.md  # 專案開發指引
 ├── src/
 │   ├── js/                 # JavaScript 模組
@@ -81,7 +84,15 @@ cattle-farm-poc/
 │       ├── auth.css        # 登入/註冊樣式
 │       ├── admin.css       # 管理員介面樣式
 │       └── user.css        # 使用者介面樣式
+├── tests/                  # Playwright 測試
+│   ├── test-auth-login.spec.js    # 登入功能測試
+│   ├── test-auth-register.spec.js # 註冊功能測試
+│   ├── test-admin.spec.js         # 管理員功能測試
+│   ├── test-user.spec.js          # 使用者功能測試
+│   └── test-helpers.js            # 測試輔助工具
 ├── index.html              # 主要入口檔案
+├── package.json            # Node.js 依賴項設定
+├── playwright.config.js    # Playwright 測試配置
 └── README.md
 ```
 
@@ -109,6 +120,50 @@ cattle-farm-poc/
 - 所有介面文字使用正體中文（繁體中文）
 - 遵循 ES6+ 語法規範
 - 保持程式碼模組化與可讀性
+- **變更程式碼後必須執行測試**
+
+## 測試
+
+本專案使用 Playwright 進行端對端自動化測試。
+
+### 安裝測試環境
+
+```bash
+# 安裝 Node.js 依賴項
+npm install
+
+# 安裝 Playwright 瀏覽器
+npx playwright install
+```
+
+### 執行測試
+
+```bash
+# 執行所有測試
+npm test
+
+# 執行測試（帶瀏覽器視窗）
+npm run test:headed
+
+# 執行測試（互動式 UI）
+npm run test:ui
+
+# 除錯模式
+npm run test:debug
+```
+
+### 測試覆蓋範圍
+
+- ✅ 登入功能測試（預設管理員、錯誤處理、登入狀態保持）
+- ✅ 註冊功能測試（新使用者註冊、驗證規則、重複註冊檢查）
+- ✅ 管理員功能測試（使用者列表、點數指派、登出）
+- ✅ 一般使用者功能測試（查看點數、帳號資訊、點數更新）
+
+### CI/CD 自動化測試
+
+- 推送到 `main` 或 `develop` 分支時自動執行測試
+- Pull Request 會自動執行測試驗證
+- 測試報告自動上傳為 Artifacts
 
 ## 注意事項
 

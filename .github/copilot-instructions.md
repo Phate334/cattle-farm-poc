@@ -100,16 +100,25 @@
 1. **功能開發**：
    - 在新分支上進行功能開發
    - 保持提交訊息清晰明確
-   - 測試功能正常運作
+   - **必須先執行測試確保功能正常運作**
 
-2. **程式碼審查**：
+2. **測試要求**：
+   - **所有程式碼變更都必須先執行自動化測試**
+   - 在提交 Pull Request 前必須確保所有測試通過
+   - 如果新增功能，應該同時新增對應的測試案例
+   - 測試指令：`npm test`
+   - 本地開發伺服器：`npm run serve` 或 `python -m http.server 8000`
+
+3. **程式碼審查**：
    - 確認符合專案規範
    - 檢查中文用語正確性
    - 驗證沒有引入第三方框架
+   - **確認所有測試都已通過**
 
-3. **合併與部署**：
+4. **合併與部署**：
    - 合併到主分支後自動觸發 CI/CD
    - 確認 GitHub Pages 部署成功
+   - 確認 GitHub Actions 測試流程執行成功
 
 ## 遊戲功能開發指引
 
@@ -144,12 +153,52 @@ const UserManager = {
 - 優先考慮功能實現，其次考慮效能最佳化
 - 保持程式碼簡潔易讀
 - 定期更新 README.md 說明專案進度與功能
+- **變更程式碼後必須執行測試以確保功能正常**
+
+## 測試系統
+
+本專案使用 Playwright 進行端對端測試，測試涵蓋所有核心功能。
+
+### 測試環境設定
+
+1. 安裝依賴項：
+   ```bash
+   npm install
+   ```
+
+2. 安裝 Playwright 瀏覽器：
+   ```bash
+   npx playwright install
+   ```
+
+### 執行測試
+
+- 執行所有測試：`npm test`
+- 執行測試（帶瀏覽器視窗）：`npm run test:headed`
+- 執行測試（互動式 UI）：`npm run test:ui`
+- 除錯模式：`npm run test:debug`
+
+### 測試覆蓋範圍
+
+測試案例位於 `./tests` 目錄：
+- `test-auth-login.spec.js` - 登入功能測試
+- `test-auth-register.spec.js` - 註冊功能測試
+- `test-admin.spec.js` - 管理員功能測試
+- `test-user.spec.js` - 一般使用者功能測試
+- `test-helpers.js` - 測試輔助工具函數
+
+### CI/CD 自動化測試
+
+- GitHub Actions 會在推送到 `main` 或 `develop` 分支時自動執行測試
+- Pull Request 也會觸發自動化測試
+- 測試報告會自動上傳為 Artifacts，可在 Actions 頁面下載查看
 
 ## 參考資源
 
 - [MDN Web Docs](https://developer.mozilla.org/zh-TW/) - 繁體中文版本
 - [GitHub Pages 文件](https://docs.github.com/en/pages)
 - [GitHub Actions 文件](https://docs.github.com/en/actions)
+- [Playwright 文件](https://playwright.dev/) - 自動化測試框架
 
 ---
 

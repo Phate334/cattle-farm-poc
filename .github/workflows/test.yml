@@ -1,0 +1,53 @@
+name: 自動化測試
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Playwright 測試
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 簽出程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安裝 Node.js 依賴項
+        run: npm ci
+
+      - name: 安裝 Playwright 瀏覽器
+        run: npx playwright install --with-deps
+
+      - name: 執行測試
+        run: npm test
+
+      - name: 上傳測試報告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 30
+
+      - name: 上傳測試結果摘要
+        if: always()
+        run: |
+          if [ -f test-results/results.json ]; then
+            echo "## 測試結果 🧪" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "測試報告已生成，請查看 Artifacts 下載完整報告。" >> $GITHUB_STEP_SUMMARY
+          fi
