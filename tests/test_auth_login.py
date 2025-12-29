@@ -4,7 +4,7 @@
 
 import pytest
 from playwright.sync_api import Page, expect
-from tests.test_helpers import (
+from test_helpers import (
     expect_auth_page,
     expect_admin_page,
     login,

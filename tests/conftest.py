@@ -8,7 +8,7 @@ import time
 import signal
 import os
 from playwright.sync_api import Page
-from tests.test_helpers import clear_local_storage, wait_for_page_load
+from test_helpers import clear_local_storage, wait_for_page_load
 
 
 # HTTP 伺服器進程
