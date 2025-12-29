@@ -147,17 +147,26 @@ class TestUserGame:
         register(self.page, self.test_username, self.test_password)
         self.page.wait_for_timeout(2000)
         
+        # 登入
+        login(self.page, self.test_username, self.test_password)
+        expect_user_page(self.page)
+        
+        # 等待頁面完全載入
+        self.page.wait_for_timeout(2000)
+        
         # 給予使用者一些點數（透過 LocalStorage 直接修改）
         self.page.evaluate("""
             () => {
                 const users = JSON.parse(localStorage.getItem('cattleFarmUsers'));
                 const currentUser = JSON.parse(localStorage.getItem('cattleFarmCurrentUser'));
-                const user = users.find(u => u.id === currentUser.id);
-                if (user) {
-                    user.points = 100;
-                    localStorage.setItem('cattleFarmUsers', JSON.stringify(users));
-                    currentUser.points = 100;
-                    localStorage.setItem('cattleFarmCurrentUser', JSON.stringify(currentUser));
+                if (users && currentUser) {
+                    const user = users.find(u => u.id === currentUser.id);
+                    if (user) {
+                        user.points = 100;
+                        localStorage.setItem('cattleFarmUsers', JSON.stringify(users));
+                        currentUser.points = 100;
+                        localStorage.setItem('cattleFarmCurrentUser', JSON.stringify(currentUser));
+                    }
                 }
             }
         """)
