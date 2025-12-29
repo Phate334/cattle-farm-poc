@@ -29,7 +29,7 @@ jobs:
       - name: 建立虛擬環境並安裝依賴
         run: |
           uv venv
-          uv pip install playwright pytest pytest-playwright pytest-xdist pytest-html
+          uv pip install playwright pytest pytest-playwright pytest-xdist
 
       - name: 安裝 Playwright 瀏覽器
         run: |
@@ -39,21 +39,4 @@ jobs:
       - name: 執行測試
         run: |
           source .venv/bin/activate
-          pytest -v --tb=short
-
-      - name: 上傳測試報告
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-report
-          path: test-results/
-          retention-days: 30
-
-      - name: 上傳測試結果摘要
-        if: always()
-        run: |
-          if [ -f test-results/report.html ]; then
-            echo "## 測試結果 🧪" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "測試報告已生成，請查看 Artifacts 下載完整報告。" >> $GITHUB_STEP_SUMMARY
-          fi
+          pytest -v --tb=short --base-url=http://localhost:8000

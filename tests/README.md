@@ -64,7 +64,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # 建立虛擬環境並安裝依賴
 uv venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-uv pip install playwright pytest pytest-playwright pytest-xdist pytest-html
+uv pip install playwright pytest pytest-playwright pytest-xdist
 
 # 安裝 Playwright 瀏覽器
 playwright install chromium

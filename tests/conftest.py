@@ -19,12 +19,13 @@ def pytest_configure(config):
     """Pytest 啟動時的配置"""
     global http_server_process
     
-    # 啟動 Python HTTP 伺服器
+    # 啟動 Python HTTP 伺服器（指定工作目錄為專案根目錄）
     print("\n🚀 啟動 HTTP 伺服器 (port 8000)...")
     http_server_process = subprocess.Popen(
         ["python", "-m", "http.server", "8000"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
+        cwd=str(config.rootpath),  # 明確指定工作目錄
         preexec_fn=os.setsid if os.name != 'nt' else None
     )
     

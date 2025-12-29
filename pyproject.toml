@@ -8,7 +8,6 @@ dependencies = [
     "pytest>=7.4.0",
     "pytest-playwright>=0.4.0",
     "pytest-xdist>=3.5.0",
-    "pytest-html>=4.1.0",
 ]
 
 [tool.pytest.ini_options]
@@ -20,8 +19,6 @@ addopts = [
     "-v",
     "--strict-markers",
     "--tb=short",
-    "--html=test-results/report.html",
-    "--self-contained-html",
 ]
 markers = [
     "auth: 認證相關測試",
