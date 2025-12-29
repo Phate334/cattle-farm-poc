@@ -133,7 +133,8 @@ def expect_message(page: Page, message_locator: str, text: str, msg_type: str = 
     expect(message).to_be_visible()
     expect(message).to_contain_text(text)
     if msg_type:
-        expect(message).to_have_class(f".*{msg_type}.*")
+        # 修正：應該檢查完整的 class 字串，不是 regex
+        expect(message).to_have_class(f"message {msg_type}")
 
 
 def generate_random_username() -> str:

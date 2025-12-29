@@ -101,6 +101,11 @@ class TestUser:
         # 為測試使用者指派 150 點
         user_select = self.page.locator("#target-user")
         user_select.wait_for(state="visible", timeout=10000)
+        # 等待選項載入
+        self.page.wait_for_function(
+            "document.querySelectorAll('#target-user option').length > 1",
+            timeout=10000
+        )
         user_select.select_option(label=self.test_username, timeout=10000)
         self.page.fill("#points-amount", "150")
         self.page.click('#assignPointsForm button[type="submit"]')
@@ -134,6 +139,11 @@ class TestUser:
         login(self.page, "admin", "admin")
         user_select = self.page.locator("#target-user")
         user_select.wait_for(state="visible", timeout=10000)
+        # 等待選項載入
+        self.page.wait_for_function(
+            "document.querySelectorAll('#target-user option').length > 1",
+            timeout=10000
+        )
         user_select.select_option(label=self.test_username, timeout=10000)
         self.page.fill("#points-amount", "200")
         self.page.click('#assignPointsForm button[type="submit"]')

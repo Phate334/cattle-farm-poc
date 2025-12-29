@@ -64,9 +64,14 @@ class TestAdmin:
         login(self.page, "admin", "admin")
         expect_admin_page(self.page)
         
-        # 等待並選擇使用者
+        # 等待並選擇使用者 - 確保選項已載入
         user_select = self.page.locator("#target-user")
         user_select.wait_for(state="visible", timeout=10000)
+        # 等待至少有一個選項（除了預設的提示選項）
+        self.page.wait_for_function(
+            "document.querySelectorAll('#target-user option').length > 1",
+            timeout=10000
+        )
         user_select.select_option(label=test_user, timeout=10000)
         
         # 填寫點數
@@ -108,6 +113,11 @@ class TestAdmin:
         # 第一次指派 50 點
         user_select = self.page.locator("#target-user")
         user_select.wait_for(state="visible", timeout=10000)
+        # 等待選項載入
+        self.page.wait_for_function(
+            "document.querySelectorAll('#target-user option').length > 1",
+            timeout=10000
+        )
         user_select.select_option(label=test_user, timeout=10000)
         self.page.fill("#points-amount", "50")
         self.page.click('#assignPointsForm button[type="submit"]')
@@ -132,9 +142,10 @@ class TestAdmin:
         
         # 應該顯示錯誤訊息
         message = self.page.locator("#admin-message")
+        message.wait_for(state="visible", timeout=10000)
         expect(message).to_be_visible()
         expect(message).to_contain_text("請選擇使用者")
-        expect(message).to_have_class(".*error.*")
+        expect(message).to_have_class("message error")
     
     def test_error_when_invalid_points_amount(self):
         """點數數量無效時應該顯示錯誤訊息"""
@@ -151,6 +162,11 @@ class TestAdmin:
         # 選擇使用者但不填寫點數
         user_select = self.page.locator("#target-user")
         user_select.wait_for(state="visible", timeout=10000)
+        # 等待選項載入
+        self.page.wait_for_function(
+            "document.querySelectorAll('#target-user option').length > 1",
+            timeout=10000
+        )
         user_select.select_option(label=test_user, timeout=10000)
         self.page.click('#assignPointsForm button[type="submit"]')
         
