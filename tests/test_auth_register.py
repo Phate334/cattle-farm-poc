@@ -43,8 +43,7 @@ class TestAuthRegister:
         expect_message(page, "#auth-message", "註冊成功", "success")
         
         # 應該自動跳轉回登入表單
-        import time
-        time.sleep(2)
+        page.wait_for_timeout(2000)
         expect(page.locator("#login-form.active")).to_be_visible()
         
         # 應該自動填入帳號
@@ -66,8 +65,7 @@ class TestAuthRegister:
         
         # 註冊
         register(page, username, password)
-        import time
-        time.sleep(2)
+        page.wait_for_timeout(2000)
         
         # 登入
         login(page, username, password)

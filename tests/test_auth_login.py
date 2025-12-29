@@ -22,7 +22,8 @@ class TestAuthLogin:
         page = page_setup
         expect_auth_page(page)
         expect(page.locator("#login-form.active")).to_be_visible()
-        expect(page.locator("h2")).to_contain_text("會員登入")
+        # 使用更具體的選擇器來避免 strict mode violation
+        expect(page.locator("#login-form h2")).to_contain_text("會員登入")
     
     def test_admin_login_success(self, page_setup: Page):
         """使用預設管理員帳號登入成功"""

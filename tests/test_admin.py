@@ -29,7 +29,8 @@ class TestAdmin:
     
     def test_admin_page_displays_correctly(self):
         """管理員頁面應該顯示正確的標題和使用者名稱"""
-        expect(self.page.locator("h1")).to_contain_text("管理員後臺")
+        # 使用更具體的選擇器
+        expect(self.page.locator("#admin-page h1")).to_contain_text("管理員後臺")
         expect(self.page.locator("#admin-username")).to_contain_text("admin")
     
     def test_admin_can_view_user_list(self):
@@ -38,8 +39,7 @@ class TestAdmin:
         logout(self.page)
         test_user = generate_random_username()
         register(self.page, test_user, "password123")
-        import time
-        time.sleep(2)
+        self.page.wait_for_timeout(2000)
         
         # 重新以管理員登入
         login(self.page, "admin", "admin")
@@ -58,16 +58,16 @@ class TestAdmin:
         logout(self.page)
         test_user = generate_random_username()
         register(self.page, test_user, "password123")
-        import time
-        time.sleep(2)
+        self.page.wait_for_timeout(2000)
         
         # 重新以管理員登入
         login(self.page, "admin", "admin")
         expect_admin_page(self.page)
         
-        # 選擇使用者
+        # 等待並選擇使用者
         user_select = self.page.locator("#target-user")
-        user_select.select_option(label=test_user, timeout=5000)
+        user_select.wait_for(state="visible", timeout=10000)
+        user_select.select_option(label=test_user, timeout=10000)
         
         # 填寫點數
         self.page.fill("#points-amount", "100")
@@ -76,10 +76,11 @@ class TestAdmin:
         self.page.click('#assignPointsForm button[type="submit"]')
         
         # 等待操作完成
-        time.sleep(0.5)
+        self.page.wait_for_timeout(500)
         
         # 應該顯示成功訊息
         message = self.page.locator("#admin-message")
+        message.wait_for(state="visible", timeout=10000)
         expect(message).to_be_visible()
         expect(message).to_contain_text("成功")
         expect(message).to_contain_text("100")
@@ -98,24 +99,25 @@ class TestAdmin:
         logout(self.page)
         test_user = generate_random_username()
         register(self.page, test_user, "password123")
-        import time
-        time.sleep(2)
+        self.page.wait_for_timeout(2000)
         
         # 重新以管理員登入
         login(self.page, "admin", "admin")
         expect_admin_page(self.page)
         
         # 第一次指派 50 點
-        self.page.locator("#target-user").select_option(label=test_user, timeout=5000)
+        user_select = self.page.locator("#target-user")
+        user_select.wait_for(state="visible", timeout=10000)
+        user_select.select_option(label=test_user, timeout=10000)
         self.page.fill("#points-amount", "50")
         self.page.click('#assignPointsForm button[type="submit"]')
-        time.sleep(0.5)
+        self.page.wait_for_timeout(500)
         
         # 第二次指派 30 點
-        self.page.locator("#target-user").select_option(label=test_user, timeout=5000)
+        self.page.locator("#target-user").select_option(label=test_user, timeout=10000)
         self.page.fill("#points-amount", "30")
         self.page.click('#assignPointsForm button[type="submit"]')
-        time.sleep(0.5)
+        self.page.wait_for_timeout(500)
         
         # 檢查 LocalStorage 中的總點數
         users = get_stored_users(self.page)
@@ -140,19 +142,21 @@ class TestAdmin:
         logout(self.page)
         test_user = generate_random_username()
         register(self.page, test_user, "password123")
-        import time
-        time.sleep(2)
+        self.page.wait_for_timeout(2000)
         
         # 重新以管理員登入
         login(self.page, "admin", "admin")
         expect_admin_page(self.page)
         
         # 選擇使用者但不填寫點數
-        self.page.locator("#target-user").select_option(label=test_user, timeout=5000)
+        user_select = self.page.locator("#target-user")
+        user_select.wait_for(state="visible", timeout=10000)
+        user_select.select_option(label=test_user, timeout=10000)
         self.page.click('#assignPointsForm button[type="submit"]')
         
         # 應該顯示錯誤訊息
         message = self.page.locator("#admin-message")
+        message.wait_for(state="visible", timeout=10000)
         expect(message).to_be_visible()
         expect(message).to_contain_text("請輸入有效的點數數量")
     

@@ -28,8 +28,7 @@ class TestUser:
         
         # 註冊使用者
         register(self.page, self.test_username, self.test_password)
-        import time
-        time.sleep(2)
+        self.page.wait_for_timeout(2000)
         
         # 登入
         login(self.page, self.test_username, self.test_password)
@@ -38,7 +37,8 @@ class TestUser:
     
     def test_user_page_displays_correctly(self):
         """使用者頁面應該顯示正確的標題和使用者名稱"""
-        expect(self.page.locator("h1")).to_contain_text("會員中心")
+        # 使用更具體的選擇器
+        expect(self.page.locator("#user-page h1")).to_contain_text("會員中心")
         expect(self.page.locator("#user-username")).to_contain_text(self.test_username)
     
     def test_user_can_view_points(self):
@@ -99,11 +99,12 @@ class TestUser:
         login(self.page, "admin", "admin")
         
         # 為測試使用者指派 150 點
-        self.page.locator("#target-user").select_option(label=self.test_username, timeout=5000)
+        user_select = self.page.locator("#target-user")
+        user_select.wait_for(state="visible", timeout=10000)
+        user_select.select_option(label=self.test_username, timeout=10000)
         self.page.fill("#points-amount", "150")
         self.page.click('#assignPointsForm button[type="submit"]')
-        import time
-        time.sleep(0.5)
+        self.page.wait_for_timeout(500)
         
         # 登出管理員並以測試使用者重新登入
         logout(self.page)
@@ -131,11 +132,12 @@ class TestUser:
         # 登出並以管理員身份為使用者增加點數
         logout(self.page)
         login(self.page, "admin", "admin")
-        self.page.locator("#target-user").select_option(label=self.test_username, timeout=5000)
+        user_select = self.page.locator("#target-user")
+        user_select.wait_for(state="visible", timeout=10000)
+        user_select.select_option(label=self.test_username, timeout=10000)
         self.page.fill("#points-amount", "200")
         self.page.click('#assignPointsForm button[type="submit"]')
-        import time
-        time.sleep(0.5)
+        self.page.wait_for_timeout(500)
         
         # 登出管理員並以測試使用者登入
         logout(self.page)
