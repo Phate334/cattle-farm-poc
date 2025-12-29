@@ -1,5 +1,5 @@
 /* 登入/註冊頁面樣式 */
-#auth-page {
+#auth-page.active {
     display: flex;
     align-items: center;
     justify-content: center;

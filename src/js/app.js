@@ -22,6 +22,11 @@ const App = {
   checkLoginStatus() {
     const user = UserManager.getCurrentUser();
 
+    // 先隱藏所有頁面
+    document.getElementById('auth-page').classList.remove('active');
+    document.getElementById('admin-page').classList.remove('active');
+    document.getElementById('user-page').classList.remove('active');
+
     if (user) {
       // 已登入，根據角色顯示對應頁面
       if (user.role === 'admin') {
@@ -31,6 +36,7 @@ const App = {
       }
     } else {
       // 未登入，顯示登入頁面
+      document.getElementById('auth-page').classList.add('active');
       Auth.showLoginForm();
     }
   }
