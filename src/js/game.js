@@ -5,6 +5,7 @@
 
 const GameManager = {
   GAME_DATA_KEY: 'cattleFarmGameData',
+  hungerTimers: {}, // 儲存每頭牛的計時器
 
   /**
    * 初始化遊戲數據
@@ -20,7 +21,22 @@ const GameManager = {
             id: 1,
             name: '乳牛 #1',
             hunger: 0,
-            maxHunger: 100
+            maxHunger: 100,
+            timerEndTime: null
+          },
+          {
+            id: 2,
+            name: '乳牛 #2',
+            hunger: 0,
+            maxHunger: 100,
+            timerEndTime: null
+          },
+          {
+            id: 3,
+            name: '乳牛 #3',
+            hunger: 0,
+            maxHunger: 100,
+            timerEndTime: null
           }
         ]
       };
@@ -121,14 +137,59 @@ const GameManager = {
     // 增加飽食度（每次餵食增加 10）
     cattle.hunger = Math.min(cattle.hunger + 10, cattle.maxHunger);
 
+    // 如果飽食度達到最大值，設定計時器結束時間（60秒後）
+    if (cattle.hunger >= cattle.maxHunger) {
+      cattle.timerEndTime = Date.now() + 60000; // 60秒 = 60000毫秒
+    }
+
     this.saveGameData(gameData);
 
     return {
       success: true,
       message: `成功餵養乳牛！飽食度：${cattle.hunger}/${cattle.maxHunger}`,
       grass: gameData.grass,
-      hunger: cattle.hunger
+      hunger: cattle.hunger,
+      timerEndTime: cattle.timerEndTime
     };
+  },
+
+  /**
+   * 更新乳牛倒數計時
+   */
+  updateCattleTimers(userId) {
+    const gameData = this.getGameData(userId);
+    if (!gameData) return;
+
+    let hasChanges = false;
+    gameData.cattle.forEach(cattle => {
+      if (cattle.timerEndTime && cattle.hunger > 0) {
+        const now = Date.now();
+        if (now >= cattle.timerEndTime) {
+          // 時間到，清空飽食度
+          cattle.hunger = 0;
+          cattle.timerEndTime = null;
+          hasChanges = true;
+        }
+      }
+    });
+
+    if (hasChanges) {
+      this.saveGameData(gameData);
+    }
+
+    return gameData;
+  },
+
+  /**
+   * 取得乳牛剩餘時間（秒）
+   */
+  getCattleRemainingTime(cattle) {
+    if (!cattle.timerEndTime || cattle.hunger === 0) {
+      return null;
+    }
+
+    const remaining = Math.max(0, Math.ceil((cattle.timerEndTime - Date.now()) / 1000));
+    return remaining;
   },
 
   /**

@@ -113,53 +113,94 @@
 
             <main class="user-content">
                 <!-- 遊戲區域 -->
-                <section class="game-section">
-                    <h2>養牛遊戲</h2>
-                    
-                    <!-- 資源顯示區 -->
-                    <div class="resources-bar">
-                        <div class="resource-item">
-                            <span class="resource-label">點數：</span>
-                            <span class="resource-value" id="game-points">0</span>
+                <div id="game-view" class="view-content">
+                    <section class="game-section">
+                        <h2>養牛遊戲</h2>
+                        
+                        <!-- 資源顯示區 -->
+                        <div class="resources-bar">
+                            <div class="resource-item">
+                                <span class="resource-label">點數：</span>
+                                <span class="resource-value" id="game-points">0</span>
+                            </div>
+                            <div class="resource-item">
+                                <span class="resource-label">牧草：</span>
+                                <span class="resource-value" id="game-grass">0</span>
+                            </div>
                         </div>
-                        <div class="resource-item">
-                            <span class="resource-label">牧草：</span>
-                            <span class="resource-value" id="game-grass">0</span>
-                        </div>
-                    </div>
 
-                    <!-- 購買牧草區 -->
-                    <div class="buy-grass-section">
-                        <h3>購買牧草</h3>
-                        <p>使用點數購買牧草來餵養乳牛（1 點數 = 1 牧草）</p>
-                        <div class="buy-controls">
-                            <input type="number" id="grass-amount" min="1" value="1" placeholder="購買數量">
-                            <button id="buy-grass-btn" class="btn btn-primary">購買牧草</button>
+                        <!-- 購買牧草區 -->
+                        <div class="buy-grass-section">
+                            <h3>購買牧草</h3>
+                            <p>使用點數購買牧草來餵養乳牛（1 點數 = 1 牧草）</p>
+                            <div class="buy-controls">
+                                <input type="number" id="grass-amount" min="1" value="1" placeholder="購買數量">
+                                <button id="buy-grass-btn" class="btn btn-primary">購買牧草</button>
+                            </div>
+                            <div id="game-message" class="message"></div>
                         </div>
-                        <div id="game-message" class="message"></div>
-                    </div>
 
-                    <!-- 乳牛顯示區 -->
-                    <div class="cattle-area">
-                        <h3>我的乳牛</h3>
-                        <div class="cattle-container" id="cattle-container">
-                            <div class="cattle-item" id="cattle-1" data-cattle-id="1">
-                                <div class="cattle-emoji">🐄</div>
-                                <div class="cattle-info">
-                                    <div class="cattle-name">乳牛 #1</div>
-                                    <div class="cattle-status">
-                                        <span class="status-label">飽食度：</span>
-                                        <span class="status-value" id="cattle-1-hunger">0</span>
-                                        <span class="status-unit">/100</span>
+                        <!-- 乳牛顯示區 -->
+                        <div class="cattle-area">
+                            <h3>我的乳牛</h3>
+                            <div class="cattle-container" id="cattle-container">
+                                <div class="cattle-item" id="cattle-1" data-cattle-id="1">
+                                    <div class="cattle-emoji">🐄</div>
+                                    <div class="cattle-info">
+                                        <div class="cattle-name">乳牛 #1</div>
+                                        <div class="cattle-status">
+                                            <span class="status-label">飽食度：</span>
+                                            <span class="status-value" id="cattle-1-hunger">0</span>
+                                            <span class="status-unit">/100</span>
+                                        </div>
+                                        <div class="cattle-timer">
+                                            <span class="timer-label">剩餘時間：</span>
+                                            <span class="timer-value" id="cattle-1-timer">--</span>
+                                            <span class="timer-unit">秒</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cattle-item" id="cattle-2" data-cattle-id="2">
+                                    <div class="cattle-emoji">🐄</div>
+                                    <div class="cattle-info">
+                                        <div class="cattle-name">乳牛 #2</div>
+                                        <div class="cattle-status">
+                                            <span class="status-label">飽食度：</span>
+                                            <span class="status-value" id="cattle-2-hunger">0</span>
+                                            <span class="status-unit">/100</span>
+                                        </div>
+                                        <div class="cattle-timer">
+                                            <span class="timer-label">剩餘時間：</span>
+                                            <span class="timer-value" id="cattle-2-timer">--</span>
+                                            <span class="timer-unit">秒</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cattle-item" id="cattle-3" data-cattle-id="3">
+                                    <div class="cattle-emoji">🐄</div>
+                                    <div class="cattle-info">
+                                        <div class="cattle-name">乳牛 #3</div>
+                                        <div class="cattle-status">
+                                            <span class="status-label">飽食度：</span>
+                                            <span class="status-value" id="cattle-3-hunger">0</span>
+                                            <span class="status-unit">/100</span>
+                                        </div>
+                                        <div class="cattle-timer">
+                                            <span class="timer-label">剩餘時間：</span>
+                                            <span class="timer-value" id="cattle-3-timer">--</span>
+                                            <span class="timer-unit">秒</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <p class="game-hint">💡 點擊乳牛來餵養牧草（每次消耗 1 牧草，增加 10 飽食度）。飽食度滿時，一分鐘後將清空。</p>
                         </div>
-                        <p class="game-hint">💡 點擊乳牛來餵養牧草（每次消耗 1 牧草，增加 10 飽食度）</p>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
-                <div id="user-status-content" class="status-content hidden">
+                <!-- 狀態頁面 -->
+                <div id="status-view" class="view-content hidden">
+                    <button id="back-to-game-btn" class="btn btn-secondary" style="margin-bottom: 1rem;">← 返回遊戲</button>
                     <section class="points-section">
                         <h2>我的點數</h2>
                         <div class="points-display">

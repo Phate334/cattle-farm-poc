@@ -3,12 +3,15 @@
  */
 
 const UserPage = {
+  timerInterval: null, // 儲存計時器間隔 ID
+
   /**
    * 初始化使用者頁面
    */
   init() {
     this.userPage = document.getElementById('user-page');
-    this.statusContent = document.getElementById('user-status-content');
+    this.gameView = document.getElementById('game-view');
+    this.statusView = document.getElementById('status-view');
 
     // 綁定登出按鈕
     document.getElementById('user-logout').addEventListener('click', () => {
@@ -17,7 +20,12 @@ const UserPage = {
 
     // 綁定狀態按鈕
     document.getElementById('user-status-btn').addEventListener('click', () => {
-      this.toggleStatusContent();
+      this.showStatusView();
+    });
+
+    // 綁定返回遊戲按鈕
+    document.getElementById('back-to-game-btn').addEventListener('click', () => {
+      this.showGameView();
     });
 
     // 綁定購買牧草按鈕
@@ -57,6 +65,12 @@ const UserPage = {
 
     // 更新遊戲資訊
     this.updateGameInfo(user.id);
+
+    // 顯示遊戲視圖
+    this.showGameView();
+
+    // 開始更新計時器
+    this.startTimerUpdates(user.id);
   },
 
   /**
@@ -64,15 +78,30 @@ const UserPage = {
    */
   hide() {
     this.userPage.classList.remove('active');
-    // 重置狀態內容為隱藏
-    this.statusContent.classList.add('hidden');
+    // 停止計時器更新
+    this.stopTimerUpdates();
   },
 
   /**
-   * 切換狀態內容顯示/隱藏
+   * 顯示遊戲視圖
    */
-  toggleStatusContent() {
-    this.statusContent.classList.toggle('hidden');
+  showGameView() {
+    this.gameView.classList.remove('hidden');
+    this.statusView.classList.add('hidden');
+  },
+
+  /**
+   * 顯示狀態視圖
+   */
+  showStatusView() {
+    this.gameView.classList.add('hidden');
+    this.statusView.classList.remove('hidden');
+    
+    // 更新狀態頁面的資料
+    const user = UserManager.getCurrentUser();
+    if (user) {
+      this.updateUserInfo(user);
+    }
   },
 
   /**
@@ -119,20 +148,53 @@ const UserPage = {
    */
   updateGameInfo(userId) {
     const user = UserManager.getUserById(userId);
-    const gameData = GameManager.getGameData(userId);
+    const gameData = GameManager.updateCattleTimers(userId);
 
     // 更新資源顯示
     document.getElementById('game-points').textContent = user.points;
     document.getElementById('game-grass').textContent = gameData ? gameData.grass : 0;
 
-    // 更新乳牛狀態
+    // 更新乳牛狀態和計時器
     if (gameData && gameData.cattle) {
       gameData.cattle.forEach(cattle => {
         const hungerElement = document.getElementById(`cattle-${cattle.id}-hunger`);
         if (hungerElement) {
           hungerElement.textContent = cattle.hunger;
         }
+
+        const timerElement = document.getElementById(`cattle-${cattle.id}-timer`);
+        if (timerElement) {
+          const remainingTime = GameManager.getCattleRemainingTime(cattle);
+          if (remainingTime !== null && cattle.hunger > 0) {
+            timerElement.textContent = remainingTime;
+          } else {
+            timerElement.textContent = '--';
+          }
+        }
       });
+    }
+  },
+
+  /**
+   * 開始更新計時器
+   */
+  startTimerUpdates(userId) {
+    // 清除現有的計時器
+    this.stopTimerUpdates();
+    
+    // 每秒更新一次
+    this.timerInterval = setInterval(() => {
+      this.updateGameInfo(userId);
+    }, 1000);
+  },
+
+  /**
+   * 停止更新計時器
+   */
+  stopTimerUpdates() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
     }
   },
 
