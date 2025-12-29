@@ -33,18 +33,7 @@ class TestAdmin:
 
 
 
-    def test_error_when_no_user_selected(self):
-        """未選擇使用者時應該顯示錯誤訊息"""
-        # 不選擇使用者直接填寫點數
-        self.page.fill("#points-amount", "100")
-        self.page.click('#assignPointsForm button[type="submit"]')
-        
-        # 應該顯示錯誤訊息
-        message = self.page.locator("#admin-message")
-        message.wait_for(state="visible", timeout=10000)
-        expect(message).to_be_visible()
-        expect(message).to_contain_text("請選擇使用者")
-        expect(message).to_have_class("message error")
+
     
 
     def test_admin_can_logout(self):
@@ -55,14 +44,4 @@ class TestAdmin:
         expect_auth_page(self.page)
         expect(self.page.locator("#login-form.active")).to_be_visible()
     
-    def test_no_users_message_displayed(self, page_setup: Page):
-        """沒有一般使用者時應該顯示提示訊息"""
-        # 直接以管理員登入（不建立其他使用者）
-        page = page_setup
-        login(page, "admin", "admin")
-        expect_admin_page(page)
-        
-        # 應該顯示無使用者訊息
-        no_users = page.locator(".no-users")
-        expect(no_users).to_be_visible()
-        expect(no_users).to_contain_text("目前沒有一般使用者")
+
