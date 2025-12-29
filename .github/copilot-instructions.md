@@ -106,8 +106,8 @@
    - **所有程式碼變更都必須先執行自動化測試**
    - 在提交 Pull Request 前必須確保所有測試通過
    - 如果新增功能，應該同時新增對應的測試案例
-   - 測試指令：`npm test`
-   - 本地開發伺服器：`npm run serve` 或 `python -m http.server 8000`
+   - 測試指令：`pytest`（需先啟動虛擬環境：`source .venv/bin/activate`）
+   - 本地開發伺服器：由 pytest 自動管理（使用 Python http.server）
 
 3. **程式碼審查**：
    - 確認符合專案規範
@@ -157,40 +157,50 @@ const UserManager = {
 
 ## 測試系統
 
-本專案使用 Playwright 進行端對端測試，測試涵蓋所有核心功能。
+本專案使用 Playwright for Python 進行端對端測試，測試涵蓋所有核心功能。
 
 ### 測試環境設定
 
-1. 安裝依賴項：
+1. 安裝 uv（Python 套件管理工具）：
    ```bash
-   npm install
+   curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
-2. 安裝 Playwright 瀏覽器：
+2. 建立虛擬環境並安裝依賴：
    ```bash
-   npx playwright install
+   uv venv
+   source .venv/bin/activate  # Windows: .venv\Scripts\activate
+   uv pip install playwright pytest pytest-playwright pytest-xdist pytest-html
+   ```
+
+3. 安裝 Playwright 瀏覽器：
+   ```bash
+   playwright install chromium
    ```
 
 ### 執行測試
 
-- 執行所有測試：`npm test`
-- 執行測試（帶瀏覽器視窗）：`npm run test:headed`
-- 執行測試（互動式 UI）：`npm run test:ui`
-- 除錯模式：`npm run test:debug`
+- 執行所有測試：`pytest`
+- 執行特定測試檔案：`pytest tests/test_auth_login.py`
+- 執行標記的測試：`pytest -m auth`（認證測試）、`pytest -m admin`（管理員測試）、`pytest -m user`（使用者測試）
+- 平行執行測試：`pytest -n auto`
+- 詳細輸出：`pytest -v`
 
 ### 測試覆蓋範圍
 
 測試案例位於 `./tests` 目錄：
-- `test-auth-login.spec.js` - 登入功能測試
-- `test-auth-register.spec.js` - 註冊功能測試
-- `test-admin.spec.js` - 管理員功能測試
-- `test-user.spec.js` - 一般使用者功能測試
-- `test-helpers.js` - 測試輔助工具函數
+- `test_auth_login.py` - 登入功能測試
+- `test_auth_register.py` - 註冊功能測試
+- `test_admin.py` - 管理員功能測試
+- `test_user.py` - 一般使用者功能測試
+- `test_helpers.py` - 測試輔助工具函數
+- `conftest.py` - Pytest 配置與 fixtures
 
 ### CI/CD 自動化測試
 
 - GitHub Actions 會在推送到 `main` 或 `develop` 分支時自動執行測試
 - Pull Request 也會觸發自動化測試
+- 使用 uv 進行快速依賴安裝，並啟用 cache 機制
 - 測試報告會自動上傳為 Artifacts，可在 Actions 頁面下載查看
 
 ## 參考資源
@@ -198,7 +208,8 @@ const UserManager = {
 - [MDN Web Docs](https://developer.mozilla.org/zh-TW/) - 繁體中文版本
 - [GitHub Pages 文件](https://docs.github.com/en/pages)
 - [GitHub Actions 文件](https://docs.github.com/en/actions)
-- [Playwright 文件](https://playwright.dev/) - 自動化測試框架
+- [Playwright Python 文件](https://playwright.dev/python/) - 自動化測試框架
+- [uv 文件](https://github.com/astral-sh/uv) - Python 套件管理工具
 
 ---
 

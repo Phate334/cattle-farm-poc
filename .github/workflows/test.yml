@@ -15,38 +15,44 @@ jobs:
       - name: 簽出程式碼
         uses: actions/checkout@v4
 
-      - name: 設定 Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
       - name: 設定 Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: 安裝 Node.js 依賴項
-        run: npm ci
+      - name: 安裝 uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - name: 建立虛擬環境並安裝依賴
+        run: |
+          uv venv
+          uv pip install playwright pytest pytest-playwright pytest-xdist pytest-html
 
       - name: 安裝 Playwright 瀏覽器
-        run: npx playwright install --with-deps
+        run: |
+          source .venv/bin/activate
+          playwright install chromium --with-deps
 
       - name: 執行測試
-        run: npm test
+        run: |
+          source .venv/bin/activate
+          pytest -v --tb=short
 
       - name: 上傳測試報告
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: test-report
           path: test-results/
           retention-days: 30
 
       - name: 上傳測試結果摘要
         if: always()
         run: |
-          if [ -f test-results/results.json ]; then
+          if [ -f test-results/report.html ]; then
             echo "## 測試結果 🧪" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "測試報告已生成，請查看 Artifacts 下載完整報告。" >> $GITHUB_STEP_SUMMARY
