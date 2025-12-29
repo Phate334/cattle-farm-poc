@@ -1,0 +1,77 @@
+/* 登入/註冊頁面樣式 */
+#auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-container h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.auth-form form {
+    width: 100%;
+}
+
+.auth-form button[type="submit"] {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.form-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #666;
+}
+
+.form-switch a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-switch a:hover {
+    text-decoration: underline;
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .auth-container h1 {
+        font-size: 1.6rem;
+    }
+
+    .auth-form h2 {
+        font-size: 1.3rem;
+    }
+}

@@ -1,0 +1,135 @@
+/* 管理員後臺頁面樣式 */
+.admin-container {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+.admin-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 區塊樣式 */
+.users-section,
+.assign-points-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.users-section h2,
+.assign-points-section h2 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 0.5rem;
+}
+
+/* 使用者列表表格 */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.users-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.users-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.users-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.2s ease;
+}
+
+.users-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.users-table td {
+    padding: 1rem;
+}
+
+.points-cell {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+.no-users {
+    text-align: center;
+    color: #999;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* 指派點數表單 */
+#assignPointsForm {
+    max-width: 500px;
+}
+
+#assignPointsForm .btn {
+    margin-top: 0.5rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 1rem;
+    }
+
+    .users-section,
+    .assign-points-section {
+        padding: 1.5rem;
+    }
+
+    .users-table {
+        font-size: 0.9rem;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .users-table thead {
+        display: none;
+    }
+
+    .users-table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    .users-table td {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+        border: none;
+    }
+
+    .users-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .points-cell {
+        font-size: 1.2rem;
+    }
+}

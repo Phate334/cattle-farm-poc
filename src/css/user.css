@@ -1,0 +1,120 @@
+/* 一般使用者頁面樣式 */
+.user-container {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+.user-content {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* 區塊樣式 */
+.points-section,
+.info-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.points-section h2,
+.info-section h2 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 0.5rem;
+}
+
+/* 點數顯示 */
+.points-display {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.points-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.points-number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.points-label {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.points-description {
+    color: #999;
+    font-size: 1rem;
+}
+
+/* 資訊顯示 */
+.info-display {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #667eea;
+    min-width: 120px;
+}
+
+.info-item span {
+    color: #333;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .user-content {
+        padding: 1rem;
+    }
+
+    .points-section,
+    .info-section {
+        padding: 1.5rem;
+    }
+
+    .points-number {
+        font-size: 3rem;
+    }
+
+    .points-label {
+        font-size: 1.2rem;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-item label {
+        min-width: auto;
+    }
+}
