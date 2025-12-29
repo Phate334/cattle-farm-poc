@@ -149,8 +149,12 @@ const Auth = {
     const user = UserManager.getCurrentUser();
     if (!user) return;
 
-    // 隱藏登入頁面
+    // 確保隱藏登入頁面
     this.authPage.classList.remove('active');
+    
+    // 隱藏所有其他頁面
+    document.getElementById('user-page').classList.remove('active');
+    document.getElementById('admin-page').classList.remove('active');
 
     // 根據角色顯示對應頁面
     if (user.role === 'admin') {

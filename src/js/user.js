@@ -61,6 +61,10 @@ const UserPage = {
   handleLogout() {
     UserManager.logout();
     this.hide();
+    
+    // 確保隱藏管理員頁面
+    document.getElementById('admin-page').classList.remove('active');
+    
     this.redirectToAuth();
   },
 
@@ -68,7 +72,9 @@ const UserPage = {
    * 重導向到登入頁面
    */
   redirectToAuth() {
-    document.getElementById('auth-page').classList.add('active');
+    // 確保顯示登入頁面
+    const authPage = document.getElementById('auth-page');
+    authPage.classList.add('active');
     Auth.showLoginForm();
   }
 };
